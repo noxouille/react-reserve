@@ -5,3 +5,14 @@ export function handleLogin(token) {
   cookie.set("token", token);
   Router.push("/account");
 }
+
+export function redirectUser(ctx, location) {
+  if (ctx.req) {
+    // if we are on the server
+    ctx.res.writeHead(302, { Location: location });
+    ctx.res.end();
+  } else {
+    // if we are on the client
+    Router.push(location);
+  }
+}
