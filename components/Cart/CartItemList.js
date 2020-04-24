@@ -1,11 +1,18 @@
-import { Header, Segment, Button, Icon, Item } from "semantic-ui-react";
+import {
+  Header,
+  Segment,
+  Button,
+  Icon,
+  Item,
+  Message
+} from "semantic-ui-react";
 import { useRouter } from "next/router";
 
-function CartItemList({ products, user, handleRemoveFromCart }) {
+function CartItemList({ products, user, handleRemoveFromCart, success }) {
   const router = useRouter();
 
   function mapCartProductsToItems(products) {
-    return products.map((p) => ({
+    return products.map(p => ({
       childKey: p.product._id,
       header: (
         <Item.Header
@@ -25,8 +32,19 @@ function CartItemList({ products, user, handleRemoveFromCart }) {
           floated="right"
           onClick={() => handleRemoveFromCart(p.product._id)}
         />
-      ),
+      )
     }));
+  }
+
+  if (success) {
+    return (
+      <Message
+        success
+        header="Success!"
+        content="Your order and payment has been accepted"
+        icon="star outline"
+      />
+    );
   }
 
   if (products.length === 0) {
@@ -50,6 +68,7 @@ function CartItemList({ products, user, handleRemoveFromCart }) {
       </Segment>
     );
   }
+
   return <Item.Group divided items={mapCartProductsToItems(products)} />;
 }
 
